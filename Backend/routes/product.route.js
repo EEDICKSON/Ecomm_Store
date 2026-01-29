@@ -1,29 +1,26 @@
 import {
   ratingProduct,
-  getAllproducts,
+  getALLproducts,
   getProduct,
   createProduct,
-  deleteProduct,
   updateProduct,
-} from "../controller/product.controller.js";
-
+  deleteProduct,
+} from "../controllers/product.controller.js";
 import express from "express";
 const router = express.Router();
 
-// Rating Product route
-router.put("/rating/:productId", ratingProduct);
-// get all products
-router.get("/", getAllproducts);
-// get one product
+// RATING PRODUCT ROUTE
+router.put("/rating/:id", ratingProduct);
+// GET ALL PRODUCTS
+router.get("/", getALLproducts);
+// GET ONE PRODUCT
 router.get("/find/:id", getProduct);
-
-// create product
+//CREATE PRODUCT
 router.post("/", createProduct);
-
-//update product
+// UPDATE PRODUCT
 router.put("/:id", updateProduct);
 
-// delete product
+//DELETE PRODUCT
 router.delete("/:id", deleteProduct);
 
 export default router;
