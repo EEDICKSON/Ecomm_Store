@@ -5,6 +5,8 @@ import dbConnection from "./utils/db.js";
 import cron from "node-cron";
 import sendWelcomeEmail from "./EmailServices/sendWelcomeEmail.js";
 import sendPendingOrderEmail from "./EmailServices/sendPendingOrderEmail.js";
+import sendDeliveredOrderEmail from "./EmailServices/sendDeliveredOrderEmail.js";
+import sendPromotionEmail from "./EmailServices/sendPromotionEmail.js";
 
 dotenv.config();
 const app = express();
@@ -16,7 +18,7 @@ const services = () => {
   cron.schedule("*/10 * * * * *", () => {
     sendWelcomeEmail();
     sendPendingOrderEmail();
-    // sendDeliveredOrderEmail();
+    sendDeliveredOrderEmail();
     // sendTimetableEmail();
 
     // Add timetable email service
@@ -25,13 +27,14 @@ const services = () => {
 
 const promotion = () => {
   cron.schedule("30 5 * * 5", () => {
+    // sending promotin email
     sendPromotionEmail();
   });
 };
 
 services();
 // scheduleAnalyticsCleanup();
-// promotion();
+promotion();
 
 app.listen(PORT, () => {
   console.log(`Background services is running on port ${PORT}`);
