@@ -1,22 +1,39 @@
+// Update your main cron service file
 import express from "express";
 import dotenv from "dotenv";
-import dbConnection from "./util/db.js";
+import dbConnection from "./utils/db.js";
 import cron from "node-cron";
+import sendWelcomeEmail from "./EmailServices/sendWelcomeEmail.js";
+import sendPendingOrderEmail from "./EmailServices/sendPendingOrderEmail.js";
+
 dotenv.config();
 const app = express();
-
 const PORT = process.env.PORT;
 
-// Schedule Services
+// SCHEDULE SERVICES
 const services = () => {
-  cron.schedule("* * * * * *", () => {
-    // console.log("running a task every second");
+  // Run every 10 seconds to check for new timetable requests
+  cron.schedule("*/10 * * * * *", () => {
+    sendWelcomeEmail();
+    sendPendingOrderEmail();
+    // sendDeliveredOrderEmail();
+    // sendTimetableEmail();
+
+    // Add timetable email service
+  });
+};
+
+const promotion = () => {
+  cron.schedule("30 5 * * 5", () => {
+    sendPromotionEmail();
   });
 };
 
 services();
+// scheduleAnalyticsCleanup();
+// promotion();
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Background services is running on port ${PORT}`);
   dbConnection();
 });
